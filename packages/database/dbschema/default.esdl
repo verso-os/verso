@@ -11,3 +11,25 @@ module default {
         };
     }
 }
+
+module auth {
+    type Project extending default::Base {
+        required name: str;
+        multi users := .<project[is User]
+    }
+
+    type User extending default::Base {
+        required email: str;
+        hashed_password: str;
+        required project: Project;
+        multi sessions := .<user[is Session];
+        constraint exclusive on ((.email, .project));
+    }
+
+    type Session extending default::Base {
+        required user: User;
+        required refresh_token: str;
+        required expires_at: datetime;
+    }
+}
+
