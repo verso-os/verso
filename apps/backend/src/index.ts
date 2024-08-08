@@ -13,14 +13,22 @@ const middleware: ExampleMiddleware = async (c, next) => {
     await next();
 };
 
-const app = new Hono().use(middleware).get("/", (c) => {
-    return c.json(c.var.message);
-});
+const app = new Hono()
+    .get("/", middleware, (c) => {
+        return c.json(c.var.message);
+    })
+    .get("/health", (c) => {
+        return c.json({ status: "ok" });
+    });
 
-const port = 9000;
-console.log(`Server is running on port ${port}`);
+export type AppType = typeof app;
 
-serve({
-    fetch: app.fetch,
-    port,
-});
+serve(
+    {
+        fetch: app.fetch,
+        port: 9000,
+    },
+    (info) => {
+        console.log(`Server is listening on port ${info.address}:${info.port}`);
+    },
+);

@@ -1,0 +1,23 @@
+{
+    "name": "database",
+    "version": "1.0.0",
+    "module": "src/index.ts",
+    "type": "module",
+    "exports": {
+        ".": "./src/index.ts"
+    },
+    "scripts": {
+        "generate": "pnpm dlx @edgedb/generate edgeql-js",
+        "migrate": "edgedb migration create && edgedb migrate",
+        "dev": "edgedb watch"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "devDependencies": {
+        "@edgedb/generate": "^0.5.4"
+    },
+    "dependencies": {
+        "edgedb": "^1.5.9"
+    }
+}
