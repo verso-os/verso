@@ -25,6 +25,8 @@ module service {
             on target delete delete source;
         };
         multi sessions := .<user[is Session];
+        index on (.project);
+        index on (.email);
         constraint exclusive on ((.email, .project));
     }
 
@@ -32,8 +34,8 @@ module service {
         required user: User {
             on target delete delete source;
         };
-        required refresh_token: str;
         required expires_at: datetime;
+        index on ((.user));
     }
 
     type OAuth2Account extending default::Base {
@@ -45,6 +47,7 @@ module service {
         required project: Project {
             on target delete delete source;
         };
+        index on (.project);
         index on (.provider);
         index on (.provider_user_id);
         constraint exclusive on ((.provider_user_id, .provider, .project));
