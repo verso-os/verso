@@ -4,9 +4,9 @@ import os from "os";
 import { serve } from "@hono/node-server";
 
 export const listen = (app: Hono, port: number = 9000) => {
-    const cores = os.cpus().length;
-
     if (cluster.isPrimary) {
+        const cores = os.cpus().length;
+
         for (let i = 0; i < cores; i++) {
             cluster.fork();
         }
