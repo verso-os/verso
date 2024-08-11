@@ -3,13 +3,15 @@
         "target": "ESNext",
         "module": "ESNext",
         "moduleResolution": "Bundler",
+        "moduleDetection": "force",
         "strict": true,
         "skipLibCheck": true,
         "types": ["node"],
         "jsx": "react-jsx",
         "jsxImportSource": "hono/jsx",
         "paths": {
-            "$*": ["./src/*"]
+            "$*": ["./src/*"],
+            "$edgeql": ["./dbschema/edgeql-js"]
         }
     }
 }
