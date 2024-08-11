@@ -1,9 +1,13 @@
-import { app } from "$app";
-import { test } from "@japa/runner";
+import { describe, expect, test } from "vitest";
 
-test.group("GET /health", () => {
-    test("returns 'ok'", async ({ expect }) => {
-        const res = await app.request("/v1/health");
+import { app } from "$app";
+import { testClient } from "hono/testing";
+
+const client = testClient(app);
+
+describe("GET /health", () => {
+    test("returns 'ok'", async () => {
+        const res = await client.v1.health.$get();
         expect(res.status).toBe(200);
         expect(await res.text()).toBe("ok");
     });
