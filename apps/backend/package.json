@@ -1,14 +1,22 @@
 {
-  "name": "backend",
-  "scripts": {
-    "dev": "tsx watch src/index.ts"
-  },
-  "dependencies": {
-    "@hono/node-server": "^1.12.0",
-    "hono": "^4.5.4"
-  },
-  "devDependencies": {
-    "@types/node": "^20.11.17",
-    "tsx": "^4.7.1"
-  }
+    "name": "backend",
+    "scripts": {
+        "dev": "tsx watch src/index.ts",
+        "db:generate": "pnpm dlx @edgedb/generate edgeql-js",
+        "db:migrate": "edgedb migration create && edgedb migrate",
+        "db:watch": "edgedb watch"
+    },
+    "dependencies": {
+        "@hono/node-server": "^1.12.0",
+        "@hono/zod-validator": "^0.2.2",
+        "@node-rs/argon2": "^1.8.3",
+        "edgedb": "^1.5.9",
+        "hono": "^4.5.4",
+        "zod": "^3.23.8"
+    },
+    "devDependencies": {
+        "@edgedb/generate": "^0.5.4",
+        "@types/node": "^20.11.17",
+        "tsx": "^4.7.1"
+    }
 }

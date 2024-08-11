@@ -13,22 +13,22 @@ module default {
 }
 
 module service {
-    type Project extending default::Base {
+    type Application extending default::Base {
         required name: str;
-        multi users := .<project[is User];
-        multi webhooks := .<project[is Webhook];
+        multi users := .<application[is User];
+        multi webhooks := .<application[is Webhook];
     }
 
     type User extending default::Base {
         required email: str;
         hashed_password: str;
-        required project: Project {
+        required application: Application {
             on target delete delete source;
         };
         multi sessions := .<user[is Session];
-        index on (.project);
+        index on (.application);
         index on (.email);
-        constraint exclusive on ((.email, .project));
+        constraint exclusive on ((.email, .application));
     }
 
     type Session extending default::Base {
@@ -45,13 +45,13 @@ module service {
         };
         required provider: str;
         required provider_user_id: str;
-        required project: Project {
+        required application: Application {
             on target delete delete source;
         };
-        index on (.project);
+        index on (.application);
         index on (.provider);
         index on (.provider_user_id);
-        constraint exclusive on ((.provider_user_id, .provider, .project));
+        constraint exclusive on ((.provider_user_id, .provider, .application));
     }
 
     type EmailVerificationCode extending default::Base {
@@ -65,13 +65,13 @@ module service {
     }
 
     type Webhook extending default::Base {
-        required project: Project {
+        required application: Application {
             on target delete delete source;
         };
         required url: str;
         required secret: str;
         multi events := .<webhook[is WebhookEvent];
-        index on (.project);
+        index on (.application);
     }
 
     type WebhookEvent extending default::Base {
