@@ -2,6 +2,7 @@
     "name": "backend",
     "scripts": {
         "dev": "tsx watch src/index.ts",
+        "test": "tsx bin/test.ts",
         "db:generate": "pnpm dlx @edgedb/generate edgeql-js",
         "db:migrate": "edgedb migration create && edgedb migrate",
         "db:watch": "edgedb watch"
@@ -16,7 +17,10 @@
     },
     "devDependencies": {
         "@edgedb/generate": "^0.5.4",
+        "@japa/expect": "3.0.0-1",
+        "@japa/runner": "3.0.0-9",
         "@types/node": "^20.11.17",
         "tsx": "^4.7.1"
-    }
+    },
+    "type": "module"
 }
