@@ -16,6 +16,7 @@ module service {
     type Project extending default::Base {
         required name: str;
         multi users := .<project[is User];
+        multi webhooks := .<project[is Webhook];
     }
 
     type User extending default::Base {
@@ -62,5 +63,32 @@ module service {
         required expires_at: datetime;
         index on ((.user));
     }
+
+    type Webhook extending default::Base {
+        required project: Project {
+            on target delete delete source;
+        };
+        required url: str;
+        required secret: str;
+        multi events := .<webhook[is WebhookEvent];
+        index on (.project);
+    }
+
+    type WebhookEvent extending default::Base {
+        required webhook: Webhook {
+            on target delete delete source;
+        };
+        required type: WebhookEventType;
+        required status: int16;
+        required payload: str;
+        required response: str;
+        index on (.webhook);
+    }
+
+    scalar type WebhookEventType extending enum<
+        UserCreated,
+        UserUpdated,
+        UserDeleted,
+    >;
 }
 
