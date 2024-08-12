@@ -63,6 +63,10 @@ export const applications = new Hono()
 
             const application = await getApplicationQuery.run(client);
 
+            if (!application) {
+                return c.json({ error: "Application not found" }, 404);
+            }
+
             return c.json(application);
         },
     );
