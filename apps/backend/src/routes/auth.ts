@@ -67,8 +67,8 @@ export const auth = new Hono()
             }
 
             const createSessionQuery = e.insert(e.service.Session, {
-                user: e.select(e.service.User, (u) => ({ filter_single: e.op(u.id, "=", user.id) })),
-                expires_at: e.datetime_current(),
+                user: e.select(e.service.User, (u) => ({ filter_single: e.op(u.id, "=", e.uuid(user.id)) })),
+                expires_at: e.datetime(new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)),
             });
 
             const getSessionQuery = e.select(createSessionQuery, () => ({
@@ -146,8 +146,8 @@ export const auth = new Hono()
             const createdUser = await getCreatedUserQuery.run(client);
 
             const createSessionQuery = e.insert(e.service.Session, {
-                user: e.select(e.service.User, (u) => ({ filter_single: e.op(u.id, "=", createdUser.id) })),
-                expires_at: e.datetime_current(),
+                user: e.select(e.service.User, (u) => ({ filter_single: e.op(u.id, "=", e.uuid(createdUser.id)) })),
+                expires_at: e.datetime(new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)),
             });
 
             const getSessionQuery = e.select(createSessionQuery, () => ({
