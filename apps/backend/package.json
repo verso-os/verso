@@ -19,6 +19,7 @@
         "@edgedb/generate": "^0.5.4",
         "@types/node": "^20.11.17",
         "tsx": "^4.7.1",
+        "vite": "^5.4.0",
         "vite-tsconfig-paths": "^5.0.1",
         "vitest": "^2.0.5"
     },
