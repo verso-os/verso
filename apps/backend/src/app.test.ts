@@ -1,9 +1,6 @@
 import { describe, expect, test } from "vitest";
 
-import { app } from "$app";
-import { testClient } from "hono/testing";
-
-const api = testClient(app);
+import { api } from "$test/api";
 
 describe("GET /health", () => {
     test("returns 'ok'", async () => {
