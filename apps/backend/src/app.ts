@@ -1,7 +1,7 @@
 import { Hono } from "hono";
-import { applications } from "$routes/applications";
-import { auth } from "$routes/auth";
-import { example } from "$middleware/example";
+import { applications } from "$backend/routes/applications";
+import { auth } from "$backend/routes/auth";
+import { example } from "$backend/middleware/example";
 
 const v1 = new Hono()
     .get("/health", example, async (c) => {
@@ -11,3 +11,5 @@ const v1 = new Hono()
     .route("/app", auth);
 
 export const app = new Hono().route("/v1", v1);
+
+export type AppType = typeof app;

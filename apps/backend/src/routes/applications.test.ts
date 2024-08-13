@@ -1,6 +1,6 @@
 import { describe, expect, test } from "vitest";
 
-import { api } from "$test/api";
+import { api } from "$backend/test/api";
 
 describe("GET /app", () => {
     test("returns empty set when there are no applications", async () => {

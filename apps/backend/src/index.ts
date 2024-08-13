@@ -1,4 +1,4 @@
-import { app } from "$app";
-import { listen } from "$listen";
+import { app } from "$backend/app";
+import { listen } from "$backend/listen";
 
 listen(app);

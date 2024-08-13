@@ -1,4 +1,4 @@
-import { client, e } from "$lib/database";
+import { client, e } from "$backend/lib/database";
 
 import { Hono } from "hono";
 import { z } from "zod";
@@ -67,6 +67,6 @@ export const applications = new Hono()
                 return c.json({ error: "Application not found" }, 404);
             }
 
-            return c.json(application);
+            return c.json(application, 200);
         },
     );

@@ -1,4 +1,4 @@
-import { client, e } from "$lib/database";
+import { client, e } from "$backend/lib/database";
 
 import { afterEach } from "vitest";
 
