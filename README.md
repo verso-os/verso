@@ -9,16 +9,22 @@ Open source authentication as a service.
 
 ## Getting started
 
+Install the EdgeDB CLI if you don't have it already.
+
+```bash
+curl https://sh.edgedb.com --proto '=https' -sSf1 | sh
+```
+
 First, initialize the database.
 
 ```bash
 cd packages/database && edgedb project init
 ```
 
-Install the EdgeDB CLI if you don't have it already.
+Then create the test branch
 
 ```bash
-curl https://sh.edgedb.com --proto '=https' -sSf1 | sh
+edgedb branch create test
 ```
 
 Then generate the query builder.
