@@ -78,7 +78,7 @@ export const auth = new Hono()
 
             const session = await getSessionQuery.run(client);
 
-            return c.json({ session });
+            return c.json({ session }, 200);
         },
     )
     .post(
@@ -157,6 +157,6 @@ export const auth = new Hono()
 
             const session = await getSessionQuery.run(client);
 
-            return c.json({ session });
+            return c.json({ session }, 200);
         },
     );

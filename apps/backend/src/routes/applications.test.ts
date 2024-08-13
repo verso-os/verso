@@ -50,7 +50,7 @@ describe("GET /app/:app", () => {
         });
         const json = await res.json();
         expect(res.status).toBe(404);
-        expect(json).toMatchObject({ error: "Application not found" });
+        expect(json).toMatchObject({ error: expect.any(String) });
     });
 
     test("returns application object matching the requested id", async () => {

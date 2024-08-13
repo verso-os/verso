@@ -15,7 +15,7 @@ export const applications = new Hono()
 
         const applications = await getApplicationsQuery.run(client);
 
-        return c.json(applications);
+        return c.json(applications, 200);
     })
     .post(
         "/",
@@ -41,7 +41,7 @@ export const applications = new Hono()
 
             const application = await getApplicationQuery.run(client);
 
-            return c.json(application);
+            return c.json(application, 200);
         },
     )
     .get(
