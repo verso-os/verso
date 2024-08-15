@@ -14,19 +14,19 @@ export default function Home() {
     });
 
     return (
-        <main className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <h1 className="text-4xl py-6 font-bold text-neutral-200">Applications</h1>
+        <>
+            <h1 className="text-4xl py-6 font-bold text-primary">Applications</h1>
             <div className="grid lg:grid-cols-5">
                 {data?.map((app) => (
                     <Link
                         href={`/app/${app.id}`}
                         key={app.id}
-                        className="bg-neutral-800 max-w-fit p-8 rounded-xl hover:bg-neutral-700"
+                        className="bg-primary-foreground max-w-fit p-8 rounded-xl hover:bg-primary/10"
                     >
-                        <h2 className="font-medium text-xl">{app.name}</h2>
+                        <h2 className="font-bold text-xl">{app.name}</h2>
                         <div>
-                            <span className="text-sm text-neutral-500">Last updated</span>
-                            <h3 className="text-sm text-neutral-200">
+                            <span className="text-sm text-primary/50">Last updated</span>
+                            <h3 className="text-sm text-primary">
                                 {new Date(app.created_at).toLocaleDateString("en-US", {
                                     year: "numeric",
                                     month: "long",
@@ -37,6 +37,6 @@ export default function Home() {
                     </Link>
                 ))}
             </div>
-        </main>
+        </>
     );
 }
