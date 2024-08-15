@@ -8,7 +8,7 @@ describe("POST /app/:app/register", () => {
 
     beforeEach(async () => {
         const res = await api.v1.app.$post({
-            json: { name: "test" },
+            json: { name: "POST /app/:app/register" },
         });
         application = await res.json();
     });
@@ -79,7 +79,7 @@ describe("POST /app/:app/login", () => {
 
     beforeEach(async () => {
         const res = await api.v1.app.$post({
-            json: { name: "test" },
+            json: { name: "POST /app/:app/login" },
         });
         application = await res.json();
     });

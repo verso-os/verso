@@ -135,7 +135,7 @@ export const auth = new Hono()
             const createUserQuery = e.insert(e.service.User, {
                 email: body.email,
                 hashed_password: hashedPassword,
-                application: getApplicationQuery,
+                application: e.select(e.service.Application, (a) => ({ filter_single: e.op(a.id, "=", e.uuid(app)) })),
             });
 
             const getCreatedUserQuery = e.select(createUserQuery, () => ({

@@ -1,7 +1,10 @@
+import { afterAll, beforeEach } from "vitest";
 import { client, e } from "$backend/lib/database";
 
-import { afterEach } from "vitest";
+beforeEach(async () => {
+    await e.delete(e.Base).run(client);
+});
 
-afterEach(async () => {
+afterAll(async () => {
     await e.delete(e.Base).run(client);
 });
