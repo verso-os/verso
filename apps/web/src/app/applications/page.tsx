@@ -2,6 +2,7 @@
 
 import { api } from "$web/lib/api";
 import { useQuery } from "@tanstack/react-query";
+import { Plus } from "lucide-react";
 import Link from "next/link";
 
 export default function Home() {
@@ -16,12 +17,12 @@ export default function Home() {
     return (
         <>
             <h1 className="text-4xl py-6 font-bold text-primary">Applications</h1>
-            <div className="grid lg:grid-cols-5">
+            <div className="grid md:grid-cols-4 gap-4">
                 {data?.map((app) => (
                     <Link
-                        href={`/app/${app.id}`}
+                        href={`/applications/${app.id}`}
                         key={app.id}
-                        className="bg-primary-foreground max-w-fit p-8 rounded-xl hover:bg-primary/10"
+                        className="bg-muted p-8 rounded-xl hover:bg-primary/10"
                     >
                         <h2 className="font-bold text-xl">{app.name}</h2>
                         <div>
@@ -36,6 +37,12 @@ export default function Home() {
                         </div>
                     </Link>
                 ))}
+                <Link
+                    href="/applications/new"
+                    className="bg-muted p-8 rounded-xl hover:bg-primary/10 grid place-items-center"
+                >
+                    <Plus className="text-foreground" width={52} height={52} opacity={0.25} />
+                </Link>
             </div>
         </>
     );
