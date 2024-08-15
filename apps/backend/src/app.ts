@@ -1,6 +1,7 @@
 import { Hono } from "hono";
 import { applications } from "$backend/routes/applications";
 import { auth } from "$backend/routes/auth";
+import { cors } from "hono/cors";
 import { example } from "$backend/middleware/example";
 import { logger } from "hono/logger";
 
@@ -11,6 +12,13 @@ const v1 = new Hono()
     .route("/app", applications)
     .route("/app", auth);
 
-export const app = new Hono().use(logger()).route("/v1", v1);
+export const app = new Hono()
+    .use(
+        cors({
+            origin: "*",
+        }),
+    )
+    .use(logger())
+    .route("/v1", v1);
 
 export type AppType = typeof app;
