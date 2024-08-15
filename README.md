@@ -18,13 +18,7 @@ curl https://sh.edgedb.com --proto '=https' -sSf1 | sh
 First, initialize the database.
 
 ```bash
-cd packages/database && edgedb project init
-```
-
-Then create the test branch
-
-```bash
-edgedb branch create test
+cd apps/backend && edgedb project init
 ```
 
 Then generate the query builder.
