@@ -10,7 +10,7 @@ const v1 = new Hono()
         return c.text("ok");
     })
     .route("/app", applications)
-    .route("/app", auth);
+    .route("/auth", auth);
 
 export const app = new Hono()
     .use(
