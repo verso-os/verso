@@ -69,4 +69,36 @@ export const applications = new Hono()
 
             return c.json(application, 200);
         },
+    )
+    .get(
+        "/:app/users",
+        zValidator(
+            "param",
+            z.object({
+                app: z.string().uuid(),
+            }),
+        ),
+        async (c) => {
+            const query = e.select(e.service.Application, (application) => ({
+                id: true,
+                name: true,
+                created_at: true,
+                updated_at: true,
+                users: e.select(e.service.User, (user) => ({
+                    id: true,
+                    email: true,
+                    created_at: true,
+                    updated_at: true,
+                })),
+                filter_single: e.op(application.id, "=", e.uuid(c.req.param("app"))),
+            }));
+
+            const result = await query.run(client);
+
+            if (!result) {
+                return c.json({ error: "Application not found" }, 404);
+            }
+
+            return c.json(result.users, 200);
+        },
     );
