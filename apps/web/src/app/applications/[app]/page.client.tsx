@@ -8,11 +8,8 @@ export function ApplicationPageClient({ params }: { params: { app: string } }) {
     const { data: application } = useApplicationQuery(params.app);
     return (
         <div>
+            <h1 className="text-4xl py-6 font-bold text-primary">Application {application?.name}</h1>
             <ApplicationDashboardChart />
-            <ul>
-                <Link href={`/applications/${params.app}/users`}>Users</Link>
-            </ul>
-            <h1>Application {application?.name}</h1>
         </div>
     );
 }
