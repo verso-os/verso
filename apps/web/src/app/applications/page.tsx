@@ -1,49 +1,16 @@
-"use client";
+import { HydrationBoundary, QueryClient, dehydrate } from "@tanstack/react-query";
 
-import { api } from "$web/lib/api";
-import { useQuery } from "@tanstack/react-query";
-import { Plus } from "lucide-react";
-import Link from "next/link";
+import { ApplicationsPageClient } from "$web/app/applications/page.client";
+import { prefetchApplicationsQuery } from "$web/hooks/api/useApplicationsQuery";
 
-export default function Home() {
-    const { data } = useQuery({
-        queryKey: ["applications"],
-        queryFn: async () => {
-            const res = await api.v1.app.$get();
-            return res.json();
-        },
-    });
+export default async function ApplicationsPageServer() {
+    const queryClient = new QueryClient();
+
+    await prefetchApplicationsQuery(queryClient);
 
     return (
-        <>
-            <h1 className="text-4xl py-6 font-bold text-primary">Applications</h1>
-            <div className="grid md:grid-cols-4 gap-4">
-                {data?.map((app) => (
-                    <Link
-                        href={`/applications/${app.id}`}
-                        key={app.id}
-                        className="bg-muted p-8 rounded-xl hover:bg-primary/10"
-                    >
-                        <h2 className="font-bold text-xl">{app.name}</h2>
-                        <div>
-                            <span className="text-sm text-primary/50">Last updated</span>
-                            <h3 className="text-sm text-primary">
-                                {new Date(app.created_at).toLocaleDateString("en-US", {
-                                    year: "numeric",
-                                    month: "long",
-                                    day: "numeric",
-                                })}
-                            </h3>
-                        </div>
-                    </Link>
-                ))}
-                <Link
-                    href="/applications/new"
-                    className="bg-muted p-8 rounded-xl hover:bg-primary/10 grid place-items-center"
-                >
-                    <Plus className="text-foreground" width={52} height={52} opacity={0.25} />
-                </Link>
-            </div>
-        </>
+        <HydrationBoundary state={dehydrate(queryClient)}>
+            <ApplicationsPageClient />
+        </HydrationBoundary>
     );
 }
