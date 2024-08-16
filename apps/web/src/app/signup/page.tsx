@@ -1,3 +1,4 @@
+"use client";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "$web/components/ui/card";
 import { api } from "$web/lib/api";
 import { useForm } from "@tanstack/react-form";

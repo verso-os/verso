@@ -1,35 +1,15 @@
-"use client";
+import { HydrationBoundary, QueryClient, dehydrate } from "@tanstack/react-query";
+import { ApplicationPageClient } from "./page.client";
+import { prefetchApplicationQuery } from "$web/hooks/api/useApplicationQuery";
 
-import { api } from "$web/lib/api";
-import { useQuery } from "@tanstack/react-query";
+export default async function ApplicationPageServer({ params }: { params: { app: string } }) {
+    const queryClient = new QueryClient();
 
-export default function ApplicationPage({ params }: { params: { app: string } }) {
-    const { data, isLoading, error } = useQuery({
-        queryKey: ["application", params.app],
-        queryFn: async () => {
-            const res = await api.v1.app[":app"].$get({
-                param: {
-                    app: params.app,
-                },
-            });
+    await prefetchApplicationQuery(queryClient, params.app);
 
-            if (res.status === 200) {
-                return res.json();
-            }
-
-            const { error } = await res.json();
-
-            throw new Error(error);
-        },
-    });
-
-    if (error) {
-        return <h1>Error: {error.message}</h1>;
-    }
-
-    if (isLoading || !data) {
-        return <h1>Loading...</h1>;
-    }
-
-    return <h1>Application {data.name}</h1>;
+    return (
+        <HydrationBoundary state={dehydrate(queryClient)}>
+            <ApplicationPageClient params={params} />
+        </HydrationBoundary>
+    );
 }
