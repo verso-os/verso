@@ -8,7 +8,7 @@ export function ApplicationsPageClient() {
     const { data } = useApplicationsQuery();
 
     return (
-        <>
+        <div className="max-w-7xl mx-auto">
             <h1 className="text-4xl py-6 font-bold text-primary">Applications</h1>
             <div className="grid md:grid-cols-4 gap-4">
                 {data?.map((app) => (
@@ -37,6 +37,6 @@ export function ApplicationsPageClient() {
                     <Plus className="text-foreground" width={52} height={52} opacity={0.25} />
                 </Link>
             </div>
-        </>
+        </div>
     );
 }

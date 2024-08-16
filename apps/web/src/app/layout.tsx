@@ -29,26 +29,7 @@ export default function RootLayout({
             <html lang="en">
                 <body className={cn("min-h-screen bg-background font-sans antialiased", fontSans.variable)}>
                     <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
-                        <main className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-                            <nav className="flex justify-between py-4">
-                                <ul className="flex gap-4 text-primary">
-                                    <li>
-                                        <Link href="/applications">Applications</Link>
-                                    </li>
-                                </ul>
-                                <ul className="flex gap-4 text-primary items-center">
-                                    <li>
-                                        <Link href="/signup">
-                                            <Button variant="secondary">Sign Up</Button>
-                                        </Link>
-                                    </li>
-                                    <li>
-                                        <ModeToggle />
-                                    </li>
-                                </ul>
-                            </nav>
-                            {children}
-                        </main>
+                        {children}
                     </ThemeProvider>
                 </body>
             </html>
