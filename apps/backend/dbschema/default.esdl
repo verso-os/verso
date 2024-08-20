@@ -9,6 +9,16 @@ module default {
             rewrite insert using (datetime_of_statement());
             rewrite update using (datetime_of_statement());
         };
+
+        created_at_day := datetime_truncate(.created_at, 'days');
+        created_at_week := datetime_truncate(.created_at, 'weeks');
+        created_at_month := datetime_truncate(.created_at, 'months');
+        created_at_year := datetime_truncate(.created_at, 'years');
+        
+        updated_at_day := datetime_truncate(.updated_at, 'days');
+        updated_at_week := datetime_truncate(.updated_at, 'weeks');
+        updated_at_month := datetime_truncate(.updated_at, 'months');
+        updated_at_year := datetime_truncate(.updated_at, 'years');
     }
 }
 

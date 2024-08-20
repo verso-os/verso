@@ -1,6 +1,7 @@
 import { client, e } from "$backend/lib/database";
 
 import { Hono } from "hono";
+import { getStartDate } from "$backend/util/getStartDate";
 import { z } from "zod";
 import { zValidator } from "@hono/zod-validator";
 
@@ -52,12 +53,64 @@ export const applications = new Hono()
                 app: z.string().uuid(),
             }),
         ),
+        zValidator(
+            "query",
+            z
+                .object({
+                    by: z
+                        .union([
+                            z.literal("created_at_day"),
+                            z.literal("created_at_week"),
+                            z.literal("created_at_month"),
+                        ])
+                        .optional(),
+                    start: z.union([z.literal("week"), z.literal("month"), z.literal("year")]).optional(),
+                })
+                .superRefine((data, ctx) => {
+                    const hierarchy = {
+                        created_at_day: 1,
+                        created_at_week: 2,
+                        created_at_month: 3,
+                        week: 2,
+                        month: 3,
+                        year: 4,
+                    };
+
+                    const { by, start } = data;
+
+                    if (by && start && hierarchy[by] > hierarchy[start]) {
+                        ctx.addIssue({
+                            code: z.ZodIssueCode.custom,
+                            message: "The 'by' unit cannot be larger than the 'start' unit.",
+                            path: ["by"],
+                        });
+                    }
+                }),
+        ),
         async (c) => {
+            const { by = "created_at_day", start = "week" } = c.req.valid("query");
+
             const getApplicationQuery = e.select(e.service.Application, (application) => ({
                 id: true,
                 name: true,
                 created_at: true,
                 updated_at: true,
+                users_created: e.select(
+                    e.group(
+                        e.select(application.users, (u) => ({
+                            filter: e.op(u.created_at, ">=", e.datetime(getStartDate(start))),
+                        })),
+                        (u) => ({
+                            by: {
+                                created_at: u[by],
+                            },
+                        }),
+                    ),
+                    (g) => ({
+                        date: g.key.created_at,
+                        count: e.count(g.elements),
+                    }),
+                ),
                 filter_single: e.op(application.id, "=", e.uuid(c.req.param("app"))),
             }));
 
