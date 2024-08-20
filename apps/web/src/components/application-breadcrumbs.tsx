@@ -8,6 +8,7 @@ import {
 } from "$web/components/ui/breadcrumb";
 import { useParams, usePathname } from "next/navigation";
 
+import Image from "next/image";
 import Link from "next/link";
 import { useApplicationQuery } from "$web/hooks/api/useApplicationQuery";
 import { useMemo } from "react";
@@ -36,6 +37,14 @@ export function ApplicationBreadcrumbs() {
     return (
         <Breadcrumb className="p-4 border-b bg-primary-foreground">
             <BreadcrumbList>
+                <BreadcrumbItem>
+                    <BreadcrumbLink asChild>
+                        <Link href="/applications" className="flex items-center gap-2">
+                            <Image src="/logo.svg" alt="logo" width={16} height={16} />
+                        </Link>
+                    </BreadcrumbLink>
+                </BreadcrumbItem>
+                <BreadcrumbSeparator />
                 <BreadcrumbItem>
                     <BreadcrumbLink asChild>
                         <Link href="/applications" className="flex items-center gap-2">
