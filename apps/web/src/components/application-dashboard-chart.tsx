@@ -1,12 +1,16 @@
 "use client";
 
 import { Bar, BarChart, Label, Rectangle, ReferenceLine, XAxis } from "recharts";
-
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "$web/components/ui/card";
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from "$web/components/ui/chart";
+
+import { InferResponseType } from "hono";
+import { api } from "$web/lib/api";
 import { useMemo } from "react";
 
-export default function ApplicationDashboardChart({ data }: { data: { date: string; count: number }[] }) {
+type Data = InferResponseType<(typeof api.v1.app)[":app"]["$get"], 200>["users_created"];
+
+export default function ApplicationDashboardChart({ data }: { data: Data }) {
     const currentDate = new Date();
 
     const weekDates = useMemo(() => {
@@ -20,8 +24,8 @@ export default function ApplicationDashboardChart({ data }: { data: { date: stri
 
     const chartData = useMemo(() => {
         return weekDates.map((date) => {
-            const formattedDate = date.toISOString().slice(0, 10);
-            const dataForDate = data?.find((item: any) => item.date.slice(0, 10) === formattedDate);
+            const formattedDate = date.toISOString().split("T")[0];
+            const dataForDate = data.find((item: any) => item.date === formattedDate);
             return {
                 date: formattedDate,
                 count: dataForDate ? dataForDate.count : 0,

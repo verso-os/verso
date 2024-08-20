@@ -120,7 +120,16 @@ export const applications = new Hono()
                 return c.json({ error: "Application not found" }, 404);
             }
 
-            return c.json(application, 200);
+            return c.json(
+                {
+                    ...application,
+                    users_created: application.users_created.map((u) => ({
+                        ...u,
+                        date: u.date!,
+                    })),
+                },
+                200,
+            );
         },
     )
     .get(
