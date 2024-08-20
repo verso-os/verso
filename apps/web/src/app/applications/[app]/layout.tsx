@@ -10,7 +10,7 @@ export default function ApplicationLayout({ children }: { children: React.ReactN
     return (
         <div className="flex flex-col h-screen">
             <ApplicationBreadcrumbs />
-            <div className="grid grid-cols-12 gap-4 flex-grow">
+            <div className="grid grid-cols-12 flex-grow">
                 <nav className="col-span-3 bg-primary-foreground p-4 border-r-[0.5px] border-primary/15">
                     <ul className="flex flex-col gap-4 text-primary">
                         {/* <li>
@@ -24,7 +24,7 @@ export default function ApplicationLayout({ children }: { children: React.ReactN
                         </li>
                     </ul>
                 </nav>
-                <main className="col-span-9 mx-auto w-full px-4 sm:px-6 lg:px-8 p-4">{children}</main>
+                <main className="col-span-9 mx-auto w-full">{children}</main>
             </div>
         </div>
     );

@@ -32,6 +32,7 @@ export function ApplicationBreadcrumbs() {
     if (!data) {
         return null;
     }
+
     return (
         <Breadcrumb className="p-4 border-b bg-primary-foreground">
             <BreadcrumbList>
