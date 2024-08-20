@@ -12,7 +12,7 @@ export function ApplicationPageClient({ params }: { params: { app: string } }) {
 
     return (
         <div>
-            <h1 className="text-4xl py-6 font-bold text-primary">Application {application?.name}</h1>
+            <h1 className="text-4xl py-6 font-bold text-primary">Home</h1>
             <ApplicationDashboardChart data={application?.users_created} />
         </div>
     );
