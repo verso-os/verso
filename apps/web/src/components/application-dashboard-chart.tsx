@@ -1,89 +1,103 @@
 "use client";
 
-import { Bar, BarChart, Label, Rectangle, ReferenceLine, XAxis } from "recharts";
+import { Bar, BarChart, CartesianGrid, Label, Rectangle, ReferenceLine, XAxis } from "recharts";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "$web/components/ui/card";
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from "$web/components/ui/chart";
+import { useMemo, useState } from "react";
 
 import { InferResponseType } from "hono";
 import { api } from "$web/lib/api";
-import { useMemo } from "react";
 
 type Data = InferResponseType<(typeof api.v1.app)[":app"]["$get"], 200>["users_created"];
 
 export default function ApplicationDashboardChart({ data }: { data: Data }) {
-    const currentDate = new Date();
+    const [currentDate] = useState(new Date(new Date().toUTCString()));
 
-    const weekDates = useMemo(() => {
-        const weekStart = new Date(currentDate.setDate(currentDate.getDate() - currentDate.getDay() + 1));
+    const dates = useMemo(() => {
+        const now = new Date(currentDate);
+        const dateRangeStart = new Date(now.setDate(now.getDate() - now.getDay()));
         return Array.from({ length: 7 }, (_, index) => {
-            const date = new Date(weekStart);
+            const date = new Date(dateRangeStart);
             date.setDate(date.getDate() + index);
             return date;
         });
     }, [currentDate]);
 
+    const dataWithLocalDate = useMemo(() => {
+        return data.map((item) => {
+            return {
+                ...item,
+                date: item.date,
+            };
+        });
+    }, [data]);
+
     const chartData = useMemo(() => {
-        return weekDates.map((date) => {
-            const formattedDate = date.toISOString().split("T")[0];
-            const dataForDate = data.find((item: any) => item.date === formattedDate);
+        return dates.map((date) => {
+            const formattedDate = date.toISOString().slice(0, 10);
+            const dataForDate = dataWithLocalDate.find((item) => item.date.split("T")[0] === formattedDate);
             return {
                 date: formattedDate,
                 count: dataForDate ? dataForDate.count : 0,
             };
         });
-    }, [weekDates, data]);
+    }, [dates, dataWithLocalDate]);
 
-    const todayFormatted = useMemo(() => currentDate.toISOString().slice(0, 10), [currentDate]);
-    const todayData = useMemo(
-        () => data.filter((item) => item.date.slice(0, 10) === todayFormatted),
+    const todayFormatted = useMemo(() => currentDate.toISOString().split("T")[0], [currentDate]);
+    const todayTotal = useMemo(
+        () => data.filter((item) => item.date.split("T")[0] === todayFormatted)[0]?.count || 0,
         [data, todayFormatted],
     );
 
+    const total = useMemo(() => data.reduce((acc, item) => acc + item.count, 0), [data]);
+
     return (
-        <Card className="">
-            <CardHeader className="space-y-0 pb-2">
-                <CardDescription>Today</CardDescription>
-                <CardTitle className="text-4xl tabular-nums">
-                    {todayData?.[0]?.count}{" "}
-                    <span className="font-sans text-sm font-normal tracking-normal text-muted-foreground">steps</span>
-                </CardTitle>
+        <Card>
+            <CardHeader className="flex flex-col items-stretch space-y-0 border-b p-0 sm:flex-row">
+                <div className="flex flex-1 flex-col justify-center gap-1 px-6 py-5 sm:py-6">
+                    <CardDescription>Today</CardDescription>
+                    <CardTitle className="text-4xl tabular-nums">
+                        {todayTotal}{" "}
+                        <span className="font-sans text-sm font-normal tracking-normal text-muted-foreground">
+                            new users
+                        </span>
+                    </CardTitle>
+                </div>
             </CardHeader>
             <CardContent>
                 <ChartContainer
+                    className="aspect-auto h-[250px] w-full"
                     config={{
-                        users: {
-                            label: "Users",
-                            color: "hsl(var(--chart-1))",
+                        count: {
+                            label: "New Users",
+                            color: "#8b5cf6",
                         },
                     }}
                 >
                     <BarChart
                         accessibilityLayer
-                        margin={{
-                            left: -4,
-                            right: -4,
-                        }}
                         data={chartData}
+                        margin={{
+                            left: 12,
+                            right: 12,
+                        }}
                     >
-                        <Bar
-                            dataKey="count"
-                            fill="green"
-                            radius={5}
-                            fillOpacity={0.6}
-                            activeBar={<Rectangle fillOpacity={0.8} />}
-                        />
+                        <CartesianGrid vertical={false} />
+                        <Bar dataKey="count" radius={5} fill="#8b5cf6" />
                         <XAxis
                             dataKey="date"
                             tickLine={false}
                             axisLine={false}
+                            tickMargin={8}
+                            minTickGap={32}
                             tickFormatter={(value) => {
-                                return new Date(value)
-                                    .toLocaleDateString("en-US", {
-                                        weekday: "short",
-                                    })
-                                    .slice(0, 3);
+                                const date = new Date(value);
+                                return date.toLocaleDateString("en-US", {
+                                    month: "short",
+                                    day: "numeric",
+                                    timeZone: "UTC",
+                                });
                             }}
-                            tickMargin={4}
                         />
                         <ChartTooltip
                             defaultIndex={2}
@@ -95,6 +109,7 @@ export default function ApplicationDashboardChart({ data }: { data: Data }) {
                                             day: "numeric",
                                             month: "long",
                                             year: "numeric",
+                                            timeZone: "UTC",
                                         });
                                     }}
                                 />
@@ -125,11 +140,13 @@ export default function ApplicationDashboardChart({ data }: { data: Data }) {
                     </BarChart>
                 </ChartContainer>
             </CardContent>
-            <CardFooter className="flex-col items-start gap-1">
-                <CardDescription>
-                    Over the past 7 days, you have walked <span className="font-medium text-foreground">53,305</span>{" "}
-                    steps.
-                </CardDescription>
+            <CardFooter className="flex-col items-start gap-1 border-t p-0">
+                <div className="flex flex-1 flex-col justify-center gap-1 px-6 py-5 sm:py-6">
+                    <CardDescription>
+                        Over the past week, you have gained <span className="font-medium text-foreground">{total}</span>{" "}
+                        new users.
+                    </CardDescription>
+                </div>
             </CardFooter>
         </Card>
     );
