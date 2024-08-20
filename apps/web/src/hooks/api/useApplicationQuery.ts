@@ -3,9 +3,11 @@ import { api } from "$web/lib/api";
 
 export const getApplication = async (app: string) => {
     const res = await api.v1.app[":app"].$get({
-        param: {
-            app: app,
+        query: {
+            by: "created_at_day",
+            start: "week",
         },
+        param: { app: app },
     });
 
     if (res.status === 200) {
