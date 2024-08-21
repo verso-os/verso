@@ -6,32 +6,12 @@ import {
     BreadcrumbPage,
     BreadcrumbSeparator,
 } from "$web/components/ui/breadcrumb";
-import { useParams, usePathname } from "next/navigation";
 
+import { ApplicationBreadcrumbCurrentApplication } from "$web/components/application-breadcrumb-current-application";
 import Image from "next/image";
 import Link from "next/link";
-import { Skeleton } from "$web/components/ui/skeleton";
-import { useApplicationQuery } from "$web/hooks/api/useApplicationQuery";
 import { useMemo } from "react";
-
-const CurrentApplicationBreadcrumb = () => {
-    const params = useParams<{ app: string }>();
-    const { data } = useApplicationQuery(params.app);
-
-    return (
-        <BreadcrumbItem>
-            <BreadcrumbLink asChild>
-                {data ? (
-                    <Link href={`/applications/${data.id}`} className="flex items-center gap-2">
-                        {data.name}
-                    </Link>
-                ) : (
-                    <Skeleton className="w-[50px]" />
-                )}
-            </BreadcrumbLink>
-        </BreadcrumbItem>
-    );
-};
+import { usePathname } from "next/navigation";
 
 export function ApplicationBreadcrumbs() {
     const pathname = usePathname();
@@ -67,7 +47,7 @@ export function ApplicationBreadcrumbs() {
                     </BreadcrumbLink>
                 </BreadcrumbItem>
                 <BreadcrumbSeparator />
-                <CurrentApplicationBreadcrumb />
+                <ApplicationBreadcrumbCurrentApplication />
                 <BreadcrumbSeparator />
                 <BreadcrumbItem>
                     <BreadcrumbPage>{page}</BreadcrumbPage>
