@@ -7,11 +7,19 @@ import { useMemo, useState } from "react";
 
 import { InferResponseType } from "hono";
 import { api } from "$web/lib/api";
+import { useApplicationQuery } from "$web/hooks/api/useApplicationQuery";
+import { useParams } from "next/navigation";
 
-type Data = InferResponseType<(typeof api.v1.app)[":app"]["$get"], 200>["users_created"];
+export default function ApplicationDashboardChart() {
+    const { app } = useParams<{ app: string }>();
+    const { data: application } = useApplicationQuery(app);
 
-export default function ApplicationDashboardChart({ data }: { data: Data }) {
     const [currentDate] = useState(new Date(new Date().toUTCString()));
+
+    const data = useMemo(() => {
+        return application?.users_created || [];
+    }, [application]);
+    console.log(data);
 
     const dates = useMemo(() => {
         const now = new Date(currentDate);
