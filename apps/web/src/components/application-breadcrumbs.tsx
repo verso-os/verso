@@ -10,12 +10,30 @@ import { useParams, usePathname } from "next/navigation";
 
 import Image from "next/image";
 import Link from "next/link";
+import { Skeleton } from "$web/components/ui/skeleton";
 import { useApplicationQuery } from "$web/hooks/api/useApplicationQuery";
 import { useMemo } from "react";
 
-export function ApplicationBreadcrumbs() {
+const CurrentApplicationBreadcrumb = () => {
     const params = useParams<{ app: string }>();
     const { data } = useApplicationQuery(params.app);
+
+    return (
+        <BreadcrumbItem>
+            <BreadcrumbLink asChild>
+                {data ? (
+                    <Link href={`/applications/${data.id}`} className="flex items-center gap-2">
+                        {data.name}
+                    </Link>
+                ) : (
+                    <Skeleton className="w-[50px]" />
+                )}
+            </BreadcrumbLink>
+        </BreadcrumbItem>
+    );
+};
+
+export function ApplicationBreadcrumbs() {
     const pathname = usePathname();
 
     const page = useMemo(() => {
@@ -29,10 +47,6 @@ export function ApplicationBreadcrumbs() {
 
         return last.charAt(0).toUpperCase() + last.slice(1);
     }, [pathname]);
-
-    if (!data) {
-        return null;
-    }
 
     return (
         <Breadcrumb className="p-4 border-b bg-primary-foreground">
@@ -53,13 +67,7 @@ export function ApplicationBreadcrumbs() {
                     </BreadcrumbLink>
                 </BreadcrumbItem>
                 <BreadcrumbSeparator />
-                <BreadcrumbItem>
-                    <BreadcrumbLink asChild>
-                        <Link href={`/applications/${data.id}`} className="flex items-center gap-2">
-                            {data.name}
-                        </Link>
-                    </BreadcrumbLink>
-                </BreadcrumbItem>
+                <CurrentApplicationBreadcrumb />
                 <BreadcrumbSeparator />
                 <BreadcrumbItem>
                     <BreadcrumbPage>{page}</BreadcrumbPage>

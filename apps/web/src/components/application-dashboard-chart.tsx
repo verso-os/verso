@@ -5,8 +5,6 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from "$web/components/ui/chart";
 import { useMemo, useState } from "react";
 
-import { InferResponseType } from "hono";
-import { api } from "$web/lib/api";
 import { useApplicationQuery } from "$web/hooks/api/useApplicationQuery";
 import { useParams } from "next/navigation";
 
