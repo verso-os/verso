@@ -16,7 +16,7 @@ export function ApplicationPageClient({ params }: { params: { app: string } }) {
                 <h1 className="py-0 font-bold text-primary">Overview</h1>
             </div>
             <div className="p-4">
-                <ApplicationDashboardChart data={application?.users_created} />
+                <ApplicationDashboardChart />
             </div>
         </div>
     );

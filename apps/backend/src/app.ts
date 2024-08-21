@@ -18,7 +18,8 @@ export const app = new Hono()
             origin: "*",
         }),
     )
-    .use(logger())
-    .route("/v1", v1);
+    .use(logger());
 
-export type AppType = typeof app;
+export const routes = app.route("/v1", v1);
+
+export type AppType = typeof routes;
