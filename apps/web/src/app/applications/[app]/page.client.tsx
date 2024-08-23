@@ -13,7 +13,7 @@ export function ApplicationPageClient({ params }: { params: { app: string } }) {
     return (
         <div>
             <div className="border-b p-4">
-                <h1 className="py-0 font-bold text-primary">Overview</h1>
+                <h1 className="py-0 text-muted-foreground">Overview</h1>
             </div>
             <div className="p-4">
                 <ApplicationDashboardChart />

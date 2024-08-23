@@ -1,9 +1,10 @@
 "use client";
 
+import { Building, Home, KeyRound, Settings, Users, Webhook } from "lucide-react";
+
 import { ApplicationBreadcrumbs } from "$web/components/application-breadcrumbs";
-import { ModeToggle } from "$web/components/mode-toggle";
-import { ChevronLeft } from "lucide-react";
 import Link from "next/link";
+import { ModeToggle } from "$web/components/mode-toggle";
 import { useParams } from "next/navigation";
 import { useState } from "react";
 
@@ -16,6 +17,7 @@ export default function ApplicationLayout({ children }: { children: React.ReactN
                 {
                     title: "Overview",
                     href: `/applications/${params.app}`,
+                    icon: Home
                 },
             ],
         },
@@ -25,10 +27,12 @@ export default function ApplicationLayout({ children }: { children: React.ReactN
                 {
                     title: "Users",
                     href: `/applications/${params.app}/users`,
+                    icon: Users
                 },
                 {
                     title: "Organizations",
                     href: `/applications/${params.app}/organizations`,
+                    icon: Building
                 },
             ],
         },
@@ -38,14 +42,17 @@ export default function ApplicationLayout({ children }: { children: React.ReactN
                 {
                     title: "Webhooks",
                     href: `/applications/${params.app}/webhooks`,
+                    icon: Webhook
                 },
                 {
                     title: "OAuth",
                     href: `/applications/${params.app}/oauth`,
+                    icon: KeyRound
                 },
                 {
                     title: "Settings",
                     href: `/applications/${params.app}/settings`,
+                    icon: Settings
                 },
             ],
         },
@@ -54,14 +61,14 @@ export default function ApplicationLayout({ children }: { children: React.ReactN
     return (
         <div className="flex flex-col h-screen">
             <ApplicationBreadcrumbs />
-            <div className="grid grid-cols-12 flex-grow">
-                <nav className="col-span-3 bg-primary-foreground p-4 border-r-[0.5px] flex flex-col justify-between">
+            <div className="grid w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr] flex-grow">
+                <nav className="bg-primary-foreground p-4 border-r-[0.5px] flex flex-col justify-between">
                     <Tree links={links} />
                     <div>
                         <ModeToggle />
                     </div>
                 </nav>
-                <main className="col-span-9 mx-auto w-full">{children}</main>
+                <main className="mx-auto w-full">{children}</main>
             </div>
         </div>
     );
@@ -89,7 +96,10 @@ const TreeItem = ({ link }: { link: any }) => {
                             href={subLink.href}
                             className="block text-sm hover:bg-foreground/5 duration-100 rounded-md p-2 cursor-pointer font-normal"
                         >
-                            <li>{subLink.title}</li>
+                            <li className="flex gap-1">
+                                {subLink.icon && <subLink.icon className="w-4 h-4 mr-2" />}
+                                {subLink.title}
+                            </li>
                         </Link>
                     ))}
                 </ul>
