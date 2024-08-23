@@ -73,9 +73,9 @@ export const ApplicationBreadcrumbCurrentApplication = () => {
                     </PopoverTrigger>
                     <PopoverContent className="w-[200px] p-0">
                         <Command>
-                            <CommandInput placeholder="Search framework..." className="h-9" />
+                            <CommandInput placeholder="Search applications..." className="h-9" />
                             <CommandList>
-                                <CommandEmpty>No framework found.</CommandEmpty>
+                                <CommandEmpty>No application found.</CommandEmpty>
                                 <CommandGroup>
                                     {applications?.map((a: any) => (
                                         <Link key={a.id} href={`/applications/${a.id}`}>

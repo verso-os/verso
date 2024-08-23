@@ -17,7 +17,6 @@ export default function ApplicationDashboardChart() {
     const data = useMemo(() => {
         return application?.users_created || [];
     }, [application]);
-    console.log(data);
 
     const dates = useMemo(() => {
         const now = new Date(currentDate);
