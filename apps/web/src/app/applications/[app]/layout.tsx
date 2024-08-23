@@ -12,6 +12,14 @@ export default function ApplicationLayout({ children }: { children: React.ReactN
 
     const [links] = useState([
         {
+            links: [
+                {
+                    title: "Overview",
+                    href: `/applications/${params.app}`,
+                },
+            ],
+        },
+        {
             title: "Management",
             links: [
                 {
@@ -29,7 +37,7 @@ export default function ApplicationLayout({ children }: { children: React.ReactN
             links: [
                 {
                     title: "Webhooks",
-                    href: `/applications/${params.app}/webhook`,
+                    href: `/applications/${params.app}/webhooks`,
                 },
                 {
                     title: "OAuth",
@@ -72,13 +80,17 @@ const Tree = ({ links }: { links: any[] }) => {
 const TreeItem = ({ link }: { link: any }) => {
     return (
         <li>
-            <span className="font-medium">{link.title}</span>
+            {link.title && <span className="text-xs tracking-wider ml-2 font-light">{link.title}</span>}
             {link.links && (
-                <ul className="ml-2">
+                <ul>
                     {link.links.map((subLink: any) => (
-                        <li key={subLink.title}>
-                            <Link href={subLink.href}>{subLink.title}</Link>
-                        </li>
+                        <Link
+                            key={subLink.title}
+                            href={subLink.href}
+                            className="block text-sm hover:bg-foreground/5 duration-100 rounded-md p-2 cursor-pointer font-normal"
+                        >
+                            <li>{subLink.title}</li>
+                        </Link>
                     ))}
                 </ul>
             )}
