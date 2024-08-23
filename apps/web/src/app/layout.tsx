@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { ReactQueryClientProvider } from "$web/components/react-query-client-provider";
-import { Inter as FontSans } from "next/font/google";
+import { Sora as FontSans } from "next/font/google";
 import { cn } from "$web/lib/utils";
 import { ThemeProvider } from "$web/components/theme-provider";
 import { ModeToggle } from "$web/components/mode-toggle";
