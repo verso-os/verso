@@ -10,7 +10,7 @@
         "jsx": "react-jsx",
         "jsxImportSource": "hono/jsx",
         "paths": {
-            "$*": ["./src/*"],
+            "$backend/*": ["./src/*"],
             "$edgeql": ["./dbschema/edgeql-js"]
         }
     }
